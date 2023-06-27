@@ -1,6 +1,7 @@
 package com.kylin.biz.sdk.proxy;
 
 import com.kylin.biz.sdk.params.WithdrawSucParam;
+import com.kylin.biz.sdk.params.WithdrawTransferOutParam;
 import com.kylin.biz.sdk.resp.CommonResponse;
 import com.kylin.biz.sdk.params.DepositSucParam;
 
@@ -9,5 +10,5 @@ public interface KylinWalletProxy {
 
     CommonResponse<?> withdrawSucCallback(WithdrawSucParam dto);
 
-    CommonResponse<?> withdrawTransferOutCallback(WithdrawSucParam dto);
+    CommonResponse<?> withdrawTransferOutCallback(WithdrawTransferOutParam dto);
 }

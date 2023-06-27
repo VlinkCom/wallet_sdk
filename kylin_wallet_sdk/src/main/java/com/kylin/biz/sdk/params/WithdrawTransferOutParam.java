@@ -12,11 +12,11 @@ import java.math.BigInteger;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class TransferOutParam {
+public class WithdrawTransferOutParam {
 
     private String bizId;
 
-    private String     txId;
+    private Long     txId;
 
     private String     toAddress;
 

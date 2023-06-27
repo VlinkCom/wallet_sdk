@@ -11,7 +11,6 @@ import org.springframework.util.StringUtils;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 public class BaseParam {
     private String privateKey;
     private String publicKey;
