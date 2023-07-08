@@ -7,16 +7,16 @@ import com.kylin.biz.sdk.params.WithdrawSucParam;
 import com.kylin.biz.sdk.params.WithdrawTransferOutParam;
 import com.kylin.biz.sdk.resp.CommonResponse;
 import com.kylin.biz.sdk.params.DepositSucParam;
-import org.springframework.beans.factory.annotation.Value;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.*;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Arrays;
 
+@Slf4j
 public class KylinWalletProxyImpl implements KylinWalletProxy{
     private final Gson gson = new Gson();
 
@@ -43,9 +43,9 @@ public class KylinWalletProxyImpl implements KylinWalletProxy{
         HttpHeaders headers = new HttpHeaders();
         HttpEntity entity = new HttpEntity(dto, headers);
         ResponseEntity<String> response = restTemplate.exchange( url, HttpMethod.POST, entity,String.class);
-        if (response.getStatusCode() != HttpStatus.OK) {
-            throw new RuntimeException("url:"+ url +"请求异常:" + response.getBody());
-        }
+//        if (response.getStatusCode() != HttpStatus.OK) {
+//            throw new RuntimeException("url:"+ url +"请求异常:" + response.getBody());
+//        }
         return gson.fromJson(response.getBody(), CommonResponse.class);
     }
 
@@ -59,7 +59,12 @@ public class KylinWalletProxyImpl implements KylinWalletProxy{
         if (response.getStatusCode() != HttpStatus.OK) {
             throw new RuntimeException("url:"+ url +"请求异常:" + response.getBody());
         }
-        return gson.fromJson(response.getBody(), CommonResponse.class);
+        CommonResponse<?> commonResponse = gson.fromJson(response.getBody(), CommonResponse.class);
+//        if (!commonResponse.getCode().equals(0)) {
+//            log.error("url:" + url + "返回异常:" + response.getBody());
+//            throw new RuntimeException("url:"+ url +"请求异常:" + response.getBody());
+//        }
+        return commonResponse;
     }
 
     @Override
@@ -68,9 +73,9 @@ public class KylinWalletProxyImpl implements KylinWalletProxy{
         HttpHeaders headers = new HttpHeaders();
         HttpEntity entity = new HttpEntity(dto, headers);
         ResponseEntity<String> response = restTemplate.exchange( url, HttpMethod.POST, entity,String.class);
-        if (response.getStatusCode() != HttpStatus.OK) {
-            throw new RuntimeException("url:"+ url +"请求异常:" + response.getBody());
-        }
+//        if (response.getStatusCode() != HttpStatus.OK) {
+//            throw new RuntimeException("url:"+ url +"请求异常:" + response.getBody());
+//        }
         return gson.fromJson(response.getBody(), CommonResponse.class);
     }
 
@@ -80,9 +85,9 @@ public class KylinWalletProxyImpl implements KylinWalletProxy{
         HttpHeaders headers = new HttpHeaders();
         HttpEntity entity = new HttpEntity(dto, headers);
         ResponseEntity<String> response = restTemplate.exchange( url, HttpMethod.POST, entity,String.class);
-        if (response.getStatusCode() != HttpStatus.OK) {
-            throw new RuntimeException("url:"+ url +"请求异常:" + response.getBody());
-        }
+//        if (response.getStatusCode() != HttpStatus.OK) {
+//            throw new RuntimeException("url:"+ url +"请求异常:" + response.getBody());
+//        }
         return gson.fromJson(response.getBody(), CommonResponse.class);
     }
 
