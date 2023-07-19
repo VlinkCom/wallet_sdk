@@ -25,4 +25,6 @@ public class WithdrawTransferOutParam {
     private String txHash;
 
     private BigInteger nonce;
+
+    private String chain;
 }
