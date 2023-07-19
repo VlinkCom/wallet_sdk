@@ -41,4 +41,6 @@ public class DepositSucParam {
     // 业务id 充值为空
     private String bizId;
 
+    private String chain;
+
 }
