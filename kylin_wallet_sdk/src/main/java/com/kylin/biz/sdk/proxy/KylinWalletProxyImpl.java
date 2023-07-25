@@ -2,11 +2,8 @@ package com.kylin.biz.sdk.proxy;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.kylin.biz.sdk.params.DepositBlockInfoParam;
-import com.kylin.biz.sdk.params.WithdrawSucParam;
-import com.kylin.biz.sdk.params.WithdrawTransferOutParam;
+import com.kylin.biz.sdk.params.*;
 import com.kylin.biz.sdk.resp.CommonResponse;
-import com.kylin.biz.sdk.params.DepositSucParam;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.*;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
@@ -81,14 +78,22 @@ public class KylinWalletProxyImpl implements KylinWalletProxy{
 
     @Override
     public CommonResponse<?> withdrawTransferOutCallback(WithdrawTransferOutParam dto) {
-        String url = kylinHost +"/withdraw/notify";
-        HttpHeaders headers = new HttpHeaders();
-        HttpEntity entity = new HttpEntity(dto, headers);
-        ResponseEntity<String> response = restTemplate.exchange( url, HttpMethod.POST, entity,String.class);
-//        if (response.getStatusCode() != HttpStatus.OK) {
-//            throw new RuntimeException("url:"+ url +"请求异常:" + response.getBody());
-//        }
-        return gson.fromJson(response.getBody(), CommonResponse.class);
+//        String url = kylinHost +"/withdraw/notify";
+//        HttpHeaders headers = new HttpHeaders();
+//        HttpEntity entity = new HttpEntity(dto, headers);
+//        ResponseEntity<String> response = restTemplate.exchange( url, HttpMethod.POST, entity,String.class);
+//        return gson.fromJson(response.getBody(), CommonResponse.class);
+        return CommonResponse.success();
+    }
+
+    @Override
+    public CommonResponse<?> withdrawTransferOutBatchCallback(WithdrawTransferOutBatchParam dto) {
+//        String url = kylinHost +"/withdraw/batch/notify";
+//        HttpHeaders headers = new HttpHeaders();
+//        HttpEntity entity = new HttpEntity(dto, headers);
+//        ResponseEntity<String> response = restTemplate.exchange( url, HttpMethod.POST, entity,String.class);
+//        return gson.fromJson(response.getBody(), CommonResponse.class);
+        return CommonResponse.success();
     }
 
     public static void main(String[] args) {
