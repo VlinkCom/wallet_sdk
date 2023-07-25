@@ -145,12 +145,12 @@
         <snapshotRepository>
             <id>exchange</id>
             <name>exchange</name>
-            <url>http://47.108.216.211:18082/repository/maven-releases/</url>
+            <url>https://nexus.fkw2.xyz/repository/maven-releases/</url>
         </snapshotRepository>
 
         <repository>
             <id>exchange-release</id>
-            <url>http://47.108.216.211:18082/repository/maven-releases/</url>
+            <url>https://nexus.fkw2.xyz/repository/maven-releases/</url>
         </repository>
     </distributionManagement>
 
