@@ -8,7 +8,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.*;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Arrays;
@@ -17,12 +16,9 @@ import java.util.Arrays;
 public class KylinWalletProxyImpl implements KylinWalletProxy{
     private final Gson gson = new Gson();
 
-    private String kylinHost;
 
     private static RestTemplate restTemplate;
     public KylinWalletProxyImpl() {
-        String kylinHostUrl = System.getenv("KYLIN_HOST_URL");
-        kylinHost = StringUtils.hasLength(kylinHostUrl) ? kylinHostUrl : "https://hipiex.net/pro";
         SimpleClientHttpRequestFactory httpRequestFactory = new SimpleClientHttpRequestFactory();
         httpRequestFactory.setConnectTimeout(5000);
         httpRequestFactory.setReadTimeout(8000);
@@ -35,8 +31,8 @@ public class KylinWalletProxyImpl implements KylinWalletProxy{
 
 
     @Override
-    public CommonResponse<?> depositBlockInfoCallback(DepositBlockInfoParam dto) {
-        String url = kylinHost +"/deposit/notify";
+    public CommonResponse<?> depositBlockInfoCallback(String urlPre, DepositBlockInfoParam dto) {
+        String url = urlPre +"/deposit/notify";
         HttpHeaders headers = new HttpHeaders();
         HttpEntity entity = new HttpEntity(dto, headers);
         ResponseEntity<String> response = restTemplate.exchange( url, HttpMethod.POST, entity,String.class);
@@ -47,9 +43,8 @@ public class KylinWalletProxyImpl implements KylinWalletProxy{
     }
 
     @Override
-    public CommonResponse<?> depositSucCallback(DepositSucParam dto) {
-
-        String url = kylinHost +"/deposit/confirm";
+    public CommonResponse<?> depositSucCallback(String urlPre, DepositSucParam dto) {
+        String url = urlPre +"/deposit/confirm";
         HttpHeaders headers = new HttpHeaders();
         HttpEntity entity = new HttpEntity(dto, headers);
         ResponseEntity<String> response = restTemplate.exchange( url, HttpMethod.POST, entity,String.class);
@@ -57,27 +52,20 @@ public class KylinWalletProxyImpl implements KylinWalletProxy{
             throw new RuntimeException("url:"+ url +"请求异常:" + response.getBody());
         }
         CommonResponse<?> commonResponse = gson.fromJson(response.getBody(), CommonResponse.class);
-//        if (!commonResponse.getCode().equals(0)) {
-//            log.error("url:" + url + "返回异常:" + response.getBody());
-//            throw new RuntimeException("url:"+ url +"请求异常:" + response.getBody());
-//        }
         return commonResponse;
     }
 
     @Override
-    public CommonResponse<?> withdrawSucCallback(WithdrawSucParam dto) {
-        String url = kylinHost +"/withdraw/confirm";
+    public CommonResponse<?> withdrawSucCallback(String urlPre, WithdrawSucParam dto) {
+        String url = urlPre +"/withdraw/confirm";
         HttpHeaders headers = new HttpHeaders();
         HttpEntity entity = new HttpEntity(dto, headers);
         ResponseEntity<String> response = restTemplate.exchange( url, HttpMethod.POST, entity,String.class);
-//        if (response.getStatusCode() != HttpStatus.OK) {
-//            throw new RuntimeException("url:"+ url +"请求异常:" + response.getBody());
-//        }
         return gson.fromJson(response.getBody(), CommonResponse.class);
     }
 
     @Override
-    public CommonResponse<?> withdrawTransferOutCallback(WithdrawTransferOutParam dto) {
+    public CommonResponse<?> withdrawTransferOutCallback(String urlPre, WithdrawTransferOutParam dto) {
 //        String url = kylinHost +"/withdraw/notify";
 //        HttpHeaders headers = new HttpHeaders();
 //        HttpEntity entity = new HttpEntity(dto, headers);
@@ -87,7 +75,7 @@ public class KylinWalletProxyImpl implements KylinWalletProxy{
     }
 
     @Override
-    public CommonResponse<?> withdrawTransferOutBatchCallback(WithdrawTransferOutBatchParam dto) {
+    public CommonResponse<?> withdrawTransferOutBatchCallback(String urlPre, WithdrawTransferOutBatchParam dto) {
 //        String url = kylinHost +"/withdraw/batch/notify";
 //        HttpHeaders headers = new HttpHeaders();
 //        HttpEntity entity = new HttpEntity(dto, headers);
@@ -99,10 +87,10 @@ public class KylinWalletProxyImpl implements KylinWalletProxy{
     public static void main(String[] args) {
         KylinWalletProxyImpl proxy = new KylinWalletProxyImpl();
 //        KylinWalletProxyImpl proxy = new KylinWalletProxyImpl();
-        CommonResponse<?> c1 = proxy.depositSucCallback(new DepositSucParam());
-        CommonResponse<?> c2 = proxy.depositBlockInfoCallback(new DepositBlockInfoParam());
-        CommonResponse<?> c3 = proxy.withdrawSucCallback(new WithdrawSucParam());
-        CommonResponse<?> c4 = proxy.withdrawTransferOutCallback(new WithdrawTransferOutParam());
+//        CommonResponse<?> c1 = proxy.depositSucCallback(new DepositSucParam());
+//        CommonResponse<?> c2 = proxy.depositBlockInfoCallback(new DepositBlockInfoParam());
+//        CommonResponse<?> c3 = proxy.withdrawSucCallback(new WithdrawSucParam());
+//        CommonResponse<?> c4 = proxy.withdrawTransferOutCallback(new WithdrawTransferOutParam());
         System.out.println("xxxx");
     }
 }

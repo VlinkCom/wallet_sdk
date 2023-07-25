@@ -5,13 +5,13 @@ import com.kylin.biz.sdk.resp.CommonResponse;
 
 public interface KylinWalletProxy {
 
-    CommonResponse<?> depositBlockInfoCallback(DepositBlockInfoParam dto);
+    CommonResponse<?> depositBlockInfoCallback(String urlPre, DepositBlockInfoParam dto);
 
-    CommonResponse<?> depositSucCallback(DepositSucParam dto);
+    CommonResponse<?> depositSucCallback(String urlPre, DepositSucParam dto);
 
-    CommonResponse<?> withdrawSucCallback(WithdrawSucParam dto);
+    CommonResponse<?> withdrawSucCallback(String urlPre, WithdrawSucParam dto);
 
-    CommonResponse<?> withdrawTransferOutCallback(WithdrawTransferOutParam dto);
+    CommonResponse<?> withdrawTransferOutCallback(String urlPre, WithdrawTransferOutParam dto);
 
-    CommonResponse<?> withdrawTransferOutBatchCallback(WithdrawTransferOutBatchParam dto);
+    CommonResponse<?> withdrawTransferOutBatchCallback(String urlPre, WithdrawTransferOutBatchParam dto);
 }
