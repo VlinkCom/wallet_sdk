@@ -7,13 +7,13 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class DepositFlowParam extends BaseParam {
-    private String id;
+public class TransactionPageParam extends BaseParam {
     private String coinType;
     private String innerStatus;
     private String chain;
     private Long start;
     private Long end;
-    private Long size;
+    private Integer size;
+    private Integer page;
 
 }

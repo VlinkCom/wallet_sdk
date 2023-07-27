@@ -6,7 +6,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 @Data
-public class DepositVo {
+public class WalletTransactionVo {
     private String id;
 
     // 服务id, 交易所id

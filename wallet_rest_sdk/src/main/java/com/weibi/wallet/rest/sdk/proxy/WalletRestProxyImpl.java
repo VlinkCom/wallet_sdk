@@ -4,7 +4,6 @@ package com.weibi.wallet.rest.sdk.proxy;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.weibi.wallet.rest.sdk.anno.WalletRestRequest;
 import com.weibi.wallet.rest.sdk.params.*;
 import com.weibi.wallet.rest.sdk.resp.CommonResponse;
 import com.weibi.wallet.rest.sdk.util.MapUtil;
@@ -20,10 +19,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.PostConstruct;
-import java.lang.reflect.Proxy;
-import java.lang.reflect.Type;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -96,18 +92,42 @@ public class WalletRestProxyImpl implements WalletRestProxy {
     }
 
     @Override
-    public CommonResponse<List<DepositVo>> flowDepositRecords(DepositFlowParam param) {
+    public CommonResponse<List<WalletTransactionVo>> flowDepositRecords(TransactionFlowParam param) {
         String url = walletRestHost +"/deposit/low?";
         String body = doGet(url, param);
-        return gson.fromJson(body, new TypeToken<CommonResponse<List<DepositVo>>>() {
+        return gson.fromJson(body, new TypeToken<CommonResponse<List<WalletTransactionVo>>>() {
         }.getType());
     }
 
     @Override
-    public CommonResponse<PageInfo<DepositVo>> pageDepositRecords(DepositPageParam param) {
+    public CommonResponse<PageInfo<WalletTransactionVo>> pageDepositRecords(TransactionPageParam param) {
         String url = walletRestHost +"/deposit/page?";
         String body = doGet(url, param);
-        return gson.fromJson(body, new TypeToken<CommonResponse<PageInfo<DepositVo>>>() {
+        return gson.fromJson(body, new TypeToken<CommonResponse<PageInfo<WalletTransactionVo>>>() {
+        }.getType());
+    }
+
+    @Override
+    public CommonResponse<List<WalletTransactionVo>> flowTransactionRecords(TransactionFlowParam param) {
+        String url = walletRestHost +"/transaction/low?";
+        String body = doGet(url, param);
+        return gson.fromJson(body, new TypeToken<CommonResponse<List<WalletTransactionVo>>>() {
+        }.getType());
+    }
+
+    @Override
+    public CommonResponse<PageInfo<WalletTransactionVo>> pageTransactionRecords(TransactionPageParam param) {
+        String url = walletRestHost +"/transaction/page?";
+        String body = doGet(url, param);
+        return gson.fromJson(body, new TypeToken<CommonResponse<PageInfo<WalletTransactionVo>>>() {
+        }.getType());
+    }
+
+    @Override
+    public CommonResponse<WalletTransactionVo> findByHash(TransactionHashParam param) {
+        String url = walletRestHost +"/transaction/record/hash?";
+        String body = doGet(url, param);
+        return gson.fromJson(body, new TypeToken<CommonResponse<WalletTransactionVo>>() {
         }.getType());
     }
 
@@ -135,7 +155,7 @@ public class WalletRestProxyImpl implements WalletRestProxy {
     }
 
     @Override
-    public CommonResponse<List<DepositVo>> flowWithdrawRecords(WithdrawFlowParam param) {
+    public CommonResponse<List<WalletTransactionVo>> flowWithdrawRecords(WithdrawFlowParam param) {
         String url = walletRestHost +"/withdraw/low?";
         String body = doGet(url, param);
         return gson.fromJson(body, new TypeToken<CommonResponse<List<TxEntityVo>>>() {
@@ -143,7 +163,7 @@ public class WalletRestProxyImpl implements WalletRestProxy {
     }
 
     @Override
-    public CommonResponse<PageInfo<DepositVo>> pageWithdrawRecords(WithdrawPageParam param) {
+    public CommonResponse<PageInfo<WalletTransactionVo>> pageWithdrawRecords(WithdrawPageParam param) {
         String url = walletRestHost +"/withdraw/page?";
         String body = doGet(url, param);
         return gson.fromJson(body, new TypeToken<CommonResponse<PageInfo<TxEntityVo>>>() {

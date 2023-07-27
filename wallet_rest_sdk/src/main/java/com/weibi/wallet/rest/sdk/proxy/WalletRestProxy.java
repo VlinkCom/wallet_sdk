@@ -4,7 +4,6 @@ package com.weibi.wallet.rest.sdk.proxy;
 import com.weibi.wallet.rest.sdk.params.*;
 import com.weibi.wallet.rest.sdk.resp.CommonResponse;
 import com.weibi.wallet.rest.sdk.vo.*;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -21,15 +20,21 @@ public interface WalletRestProxy {
 
     CommonResponse<List<CoinConfigVo>> listCoinConfig(BaseParam param);
 
-    CommonResponse<List<DepositVo>> flowDepositRecords(DepositFlowParam param);
+    CommonResponse<List<WalletTransactionVo>> flowTransactionRecords(TransactionFlowParam param);
 
-    CommonResponse<PageInfo<DepositVo>> pageDepositRecords(DepositPageParam param);
+    CommonResponse<PageInfo<WalletTransactionVo>> pageTransactionRecords(TransactionPageParam param);
+
+    CommonResponse<List<WalletTransactionVo>> flowDepositRecords(TransactionFlowParam param);
+
+    CommonResponse<PageInfo<WalletTransactionVo>> pageDepositRecords(TransactionPageParam param);
+
+    CommonResponse<WalletTransactionVo> findByHash(TransactionHashParam param);
 
     CommonResponse<TxEntityVo> createWithdraw(WithdrawCreateParam param);
 
     CommonResponse<?> cancelWithdraw(WithdrawCancelParam param);
     CommonResponse<?> getWithdrawRecord(WithdrawGetParam param);
 
-    CommonResponse<List<DepositVo>> flowWithdrawRecords(WithdrawFlowParam param);
-    CommonResponse<PageInfo<DepositVo>> pageWithdrawRecords(WithdrawPageParam param);
+    CommonResponse<List<WalletTransactionVo>> flowWithdrawRecords(WithdrawFlowParam param);
+    CommonResponse<PageInfo<WalletTransactionVo>> pageWithdrawRecords(WithdrawPageParam param);
 }
