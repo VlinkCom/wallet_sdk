@@ -119,7 +119,7 @@ public class WalletRestProxyImpl implements WalletRestProxy {
     }
 
     @Override
-    public CommonResponse<?> getWithdrawRecord(WithdrawGetParam param) {
+    public CommonResponse<TxEntityVo> getWithdrawRecord(WithdrawGetParam param) {
         String url = walletRestHost +"/withdraw/record?";
         String body = doGet(url, param);
         return gson.fromJson(body, new TypeToken<CommonResponse<TxEntityVo>>() {
@@ -130,7 +130,7 @@ public class WalletRestProxyImpl implements WalletRestProxy {
     public CommonResponse<List<DepositVo>> flowWithdrawRecords(WithdrawFlowParam param) {
         String url = walletRestHost +"/withdraw/low?";
         String body = doGet(url, param);
-        return gson.fromJson(body, new TypeToken<CommonResponse<TxEntityVo>>() {
+        return gson.fromJson(body, new TypeToken<CommonResponse<List<TxEntityVo>>>() {
         }.getType());
     }
 
