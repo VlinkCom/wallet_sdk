@@ -17,7 +17,7 @@ public class KylinWalletProxyImpl implements KylinWalletProxy{
     private final Gson gson = new Gson();
 
 
-    private static RestTemplate restTemplate;
+    private final RestTemplate restTemplate;
     public KylinWalletProxyImpl() {
         SimpleClientHttpRequestFactory httpRequestFactory = new SimpleClientHttpRequestFactory();
         httpRequestFactory.setConnectTimeout(5000);

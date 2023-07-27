@@ -5,11 +5,10 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Data
-@EqualsAndHashCode(callSuper = true)
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class WithdrawPageParam extends BaseParam{
+public class WithdrawPageParam{
 
 
 

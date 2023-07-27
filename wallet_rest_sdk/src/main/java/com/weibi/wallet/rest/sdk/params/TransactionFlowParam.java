@@ -3,11 +3,10 @@ package com.weibi.wallet.rest.sdk.params;
 import lombok.*;
 
 @Data
-@EqualsAndHashCode(callSuper = true)
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class TransactionFlowParam extends BaseParam {
+public class TransactionFlowParam {
     private String id;
     private String coinType;
     private String innerStatus;

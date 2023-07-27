@@ -6,7 +6,6 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class AddressParam {
-    private String coin;
-    private Integer size;
+public class UpdPublicKeyParam {
+    private String pk;
 }

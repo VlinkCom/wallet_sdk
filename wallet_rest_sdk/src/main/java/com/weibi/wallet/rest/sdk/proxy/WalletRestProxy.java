@@ -4,6 +4,8 @@ package com.weibi.wallet.rest.sdk.proxy;
 import com.weibi.wallet.rest.sdk.params.*;
 import com.weibi.wallet.rest.sdk.resp.CommonResponse;
 import com.weibi.wallet.rest.sdk.vo.*;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -18,7 +20,7 @@ public interface WalletRestProxy {
     /* 获取指定地址余额 */
     CommonResponse<List<AddressBalanceVo>> addressBalanceList(AddressBalanceParam param);
 
-    CommonResponse<List<CoinConfigVo>> listCoinConfig(BaseParam param);
+    CommonResponse<List<CoinConfigVo>> listCoinConfig();
 
     CommonResponse<List<WalletTransactionVo>> flowTransactionRecords(TransactionFlowParam param);
 
@@ -37,4 +39,11 @@ public interface WalletRestProxy {
 
     CommonResponse<List<WalletTransactionVo>> flowWithdrawRecords(WithdrawFlowParam param);
     CommonResponse<PageInfo<WalletTransactionVo>> pageWithdrawRecords(WithdrawPageParam param);
+
+
+    CommonResponse<String> getWalletPublicKey();
+
+    CommonResponse<?> updSidPublicKey(UpdPublicKeyParam param);
+
+
 }

@@ -10,35 +10,36 @@ import com.weibi.wallet.rest.sdk.util.MapUtil;
 import com.weibi.wallet.rest.sdk.util.ParamsSingUtil;
 import com.weibi.wallet.rest.sdk.vo.*;
 import org.apache.commons.codec.digest.HmacUtils;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 
-import javax.annotation.PostConstruct;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 
-@Service
 public class WalletRestProxyImpl implements WalletRestProxy {
 
-    @Value("${WALLET_REST_HOST}")
-    private String walletRestHost;
+    private final String walletRestHost;
 
-    private static RestTemplate restTemplate;
+    private final String publicKey;
+    private final String privateKey;
+
+    private final RestTemplate restTemplate;
 
     private final String X_SIGNATURE = "X_SIGNATURE";
     private final String X_ACCESS_KEY = "X_ACCESS_KEY";
 
     private final Gson gson = new Gson();
 
-    @PostConstruct
-    public void init() {
+    public WalletRestProxyImpl(String walletRestHost, String publicKey, String privateKey) {
+        this.walletRestHost = walletRestHost;
+        this.publicKey = publicKey;
+        this.privateKey = privateKey;
         SimpleClientHttpRequestFactory httpRequestFactory = new SimpleClientHttpRequestFactory();
         httpRequestFactory.setConnectTimeout(5000);
         httpRequestFactory.setReadTimeout(8000);
@@ -52,7 +53,8 @@ public class WalletRestProxyImpl implements WalletRestProxy {
     @Override
     public CommonResponse<List<String>> getAddress(AddressParam param) {
         String url = walletRestHost +"/address/un_used?";
-        String body = doGet(url, param);
+        Map<String, Object> params = MapUtil.beanToMap(param);
+        String body = doGet(url, params);
         return gson.fromJson(body, new TypeToken<CommonResponse<List<String>>>() {
         }.getType());
     }
@@ -60,7 +62,8 @@ public class WalletRestProxyImpl implements WalletRestProxy {
     @Override
     public CommonResponse<List<String>> getUnUsedAddress(AddressParam param) {
         String url = walletRestHost +"/address/unused?";
-        String body = doGet(url, param);
+        Map<String, Object> params = MapUtil.beanToMap(param);
+        String body = doGet(url, params);
         return gson.fromJson(body, new TypeToken<CommonResponse<List<String>>>() {
         }.getType());
     }
@@ -68,7 +71,8 @@ public class WalletRestProxyImpl implements WalletRestProxy {
     @Override
     public CommonResponse<List<String>> getAllocatedAddress(AddressParam param) {
         String url = walletRestHost +"/address/allocated?";
-        String body = doGet(url, param);
+        Map<String, Object> params = MapUtil.beanToMap(param);
+        String body = doGet(url, params);
         return gson.fromJson(body, new TypeToken<CommonResponse<List<String>>>() {
         }.getType());
     }
@@ -78,15 +82,16 @@ public class WalletRestProxyImpl implements WalletRestProxy {
     @Override
     public CommonResponse<List<AddressBalanceVo>> addressBalanceList(AddressBalanceParam param) {
         String url = walletRestHost +"/address/balance?";
-        String body = doGet(url, param);
+        Map<String, Object> params = MapUtil.beanToMap(param);
+        String body = doGet(url, params);
         return gson.fromJson(body, new TypeToken<CommonResponse<List<AddressBalanceVo>>>() {
         }.getType());
     }
 
     @Override
-    public CommonResponse<List<CoinConfigVo>> listCoinConfig(BaseParam param) {
+    public CommonResponse<List<CoinConfigVo>> listCoinConfig() {
         String url = walletRestHost +"/coin/list?";
-        String body = doGet(url, param);
+        String body = doGet(url, new HashMap<>());
         return gson.fromJson(body, new TypeToken<CommonResponse<List<CoinConfigVo>>>() {
         }.getType());
     }
@@ -94,7 +99,8 @@ public class WalletRestProxyImpl implements WalletRestProxy {
     @Override
     public CommonResponse<List<WalletTransactionVo>> flowDepositRecords(TransactionFlowParam param) {
         String url = walletRestHost +"/deposit/low?";
-        String body = doGet(url, param);
+        Map<String, Object> params = MapUtil.beanToMap(param);
+        String body = doGet(url, params);
         return gson.fromJson(body, new TypeToken<CommonResponse<List<WalletTransactionVo>>>() {
         }.getType());
     }
@@ -102,7 +108,8 @@ public class WalletRestProxyImpl implements WalletRestProxy {
     @Override
     public CommonResponse<PageInfo<WalletTransactionVo>> pageDepositRecords(TransactionPageParam param) {
         String url = walletRestHost +"/deposit/page?";
-        String body = doGet(url, param);
+        Map<String, Object> params = MapUtil.beanToMap(param);
+        String body = doGet(url, params);
         return gson.fromJson(body, new TypeToken<CommonResponse<PageInfo<WalletTransactionVo>>>() {
         }.getType());
     }
@@ -110,7 +117,8 @@ public class WalletRestProxyImpl implements WalletRestProxy {
     @Override
     public CommonResponse<List<WalletTransactionVo>> flowTransactionRecords(TransactionFlowParam param) {
         String url = walletRestHost +"/transaction/low?";
-        String body = doGet(url, param);
+        Map<String, Object> params = MapUtil.beanToMap(param);
+        String body = doGet(url, params);
         return gson.fromJson(body, new TypeToken<CommonResponse<List<WalletTransactionVo>>>() {
         }.getType());
     }
@@ -118,7 +126,8 @@ public class WalletRestProxyImpl implements WalletRestProxy {
     @Override
     public CommonResponse<PageInfo<WalletTransactionVo>> pageTransactionRecords(TransactionPageParam param) {
         String url = walletRestHost +"/transaction/page?";
-        String body = doGet(url, param);
+        Map<String, Object> params = MapUtil.beanToMap(param);
+        String body = doGet(url, params);
         return gson.fromJson(body, new TypeToken<CommonResponse<PageInfo<WalletTransactionVo>>>() {
         }.getType());
     }
@@ -126,7 +135,8 @@ public class WalletRestProxyImpl implements WalletRestProxy {
     @Override
     public CommonResponse<WalletTransactionVo> findByHash(TransactionHashParam param) {
         String url = walletRestHost +"/transaction/record/hash?";
-        String body = doGet(url, param);
+        Map<String, Object> params = MapUtil.beanToMap(param);
+        String body = doGet(url, params);
         return gson.fromJson(body, new TypeToken<CommonResponse<WalletTransactionVo>>() {
         }.getType());
     }
@@ -134,7 +144,8 @@ public class WalletRestProxyImpl implements WalletRestProxy {
     @Override
     public CommonResponse<TxEntityVo> createWithdraw(WithdrawCreateParam param) {
         String url = walletRestHost +"/withdraw/create?";
-        String body = doPost(url, param);
+        Map<String, Object> params = MapUtil.beanToMap(param);
+        String body = doGet(url, params);
         return gson.fromJson(body, new TypeToken<CommonResponse<List<TxEntityVo>>>() {
         }.getType());
     }
@@ -142,14 +153,16 @@ public class WalletRestProxyImpl implements WalletRestProxy {
     @Override
     public CommonResponse<?> cancelWithdraw(WithdrawCancelParam param) {
         String url = walletRestHost +"/withdraw/cancel?";
-        String body = doDelete(url, param);
+        Map<String, Object> params = MapUtil.beanToMap(param);
+        String body = doGet(url, params);
         return gson.fromJson(body, CommonResponse.class);
     }
 
     @Override
     public CommonResponse<TxEntityVo> getWithdrawRecord(WithdrawGetParam param) {
         String url = walletRestHost +"/withdraw/record?";
-        String body = doGet(url, param);
+        Map<String, Object> params = MapUtil.beanToMap(param);
+        String body = doGet(url, params);
         return gson.fromJson(body, new TypeToken<CommonResponse<TxEntityVo>>() {
         }.getType());
     }
@@ -157,7 +170,8 @@ public class WalletRestProxyImpl implements WalletRestProxy {
     @Override
     public CommonResponse<List<WalletTransactionVo>> flowWithdrawRecords(WithdrawFlowParam param) {
         String url = walletRestHost +"/withdraw/low?";
-        String body = doGet(url, param);
+        Map<String, Object> params = MapUtil.beanToMap(param);
+        String body = doGet(url, params);
         return gson.fromJson(body, new TypeToken<CommonResponse<List<TxEntityVo>>>() {
         }.getType());
     }
@@ -165,15 +179,33 @@ public class WalletRestProxyImpl implements WalletRestProxy {
     @Override
     public CommonResponse<PageInfo<WalletTransactionVo>> pageWithdrawRecords(WithdrawPageParam param) {
         String url = walletRestHost +"/withdraw/page?";
-        String body = doGet(url, param);
+        Map<String, Object> params = MapUtil.beanToMap(param);
+        String body = doGet(url, params);
         return gson.fromJson(body, new TypeToken<CommonResponse<PageInfo<TxEntityVo>>>() {
         }.getType());
     }
 
-    private String doDelete(String url, BaseParam param) {
-        Map<String, Object> map = MapUtil.beanToMap(param);
-        String str = ParamsSingUtil.signToString(map);
-        HttpHeaders headers = buildHeader(str, param);
+    @Override
+    public CommonResponse<String> getWalletPublicKey() {
+        String url = walletRestHost +"/service/config/wallet/publicKey";
+        String body = doGet(url, new HashMap<>());
+        return gson.fromJson(body, new TypeToken<CommonResponse<String>>() {
+        }.getType());
+    }
+
+    @Override
+    public CommonResponse<?> updSidPublicKey(UpdPublicKeyParam param) {
+        String url = walletRestHost +"/service/config/upd/publicKey";
+        Map<String, Object> params = MapUtil.beanToMap(param);
+        String body = doPost(url, params, null);
+        return gson.fromJson(body, new TypeToken<CommonResponse<String>>() {
+        }.getType());
+    }
+
+    // Map<String, Object> map = MapUtil.beanToMap(param);
+    private String doDelete(String url, Map<String, Object> params) {
+        String str = ParamsSingUtil.signToString(params);
+        HttpHeaders headers = buildHeader(str);
         HttpEntity entity = new HttpEntity(null, headers);
         ResponseEntity<String> response = restTemplate.exchange( url + str,HttpMethod.DELETE, entity,String.class);
         if (response.getStatusCode() != HttpStatus.OK) {
@@ -182,11 +214,10 @@ public class WalletRestProxyImpl implements WalletRestProxy {
         return response.getBody();
     }
 
-    private String doPost(String url, BaseParam param) {
-        Map<String, Object> map = MapUtil.beanToMap(param);
-        String str = ParamsSingUtil.signToString(map);
-        HttpHeaders headers = buildHeader(str, param);
-        HttpEntity entity = new HttpEntity(param, headers);
+    private String doPost(String url, Map<String, Object> params, Map<String, Object> body) {
+        String str = ParamsSingUtil.signToString(params);
+        HttpHeaders headers = buildHeader(str);
+        HttpEntity entity = new HttpEntity(body, headers);
         ResponseEntity<String> response = restTemplate.exchange( url + str,HttpMethod.POST, entity,String.class);
         if (response.getStatusCode() != HttpStatus.OK) {
             throw new RuntimeException("url:"+ url + str +"请求异常:" + response.getBody());
@@ -195,10 +226,9 @@ public class WalletRestProxyImpl implements WalletRestProxy {
     }
 
 
-    private String doGet(String url, BaseParam param) {
-        Map<String, Object> map = MapUtil.beanToMap(param);
-        String str = ParamsSingUtil.signToString(map);
-        HttpHeaders headers = buildHeader(str, param);
+    private String doGet(String url, Map<String, Object> params) {
+        String str = ParamsSingUtil.signToString(params);
+        HttpHeaders headers = buildHeader(str);
         HttpEntity entity = new HttpEntity(null, headers);
         ResponseEntity<String> response = restTemplate.exchange( url + str,HttpMethod.GET, entity,String.class);
         if (response.getStatusCode() != HttpStatus.OK) {
@@ -207,14 +237,14 @@ public class WalletRestProxyImpl implements WalletRestProxy {
         return response.getBody();
     }
 
-    private HttpHeaders buildHeader(String str, BaseParam param) {
-        if (StringUtils.isEmpty(param.getPrivateKey()) || StringUtils.isEmpty(param.getPublicKey())) {
+    private HttpHeaders buildHeader(String str) {
+        if (StringUtils.isEmpty(publicKey) || StringUtils.isEmpty(privateKey)) {
             throw new RuntimeException("不安全，并不合法的请求");
         }
         HttpHeaders headers = new HttpHeaders();
-        String sign = HmacUtils.hmacSha256Hex(param.getPrivateKey(), str);
+        String sign = HmacUtils.hmacSha256Hex(privateKey, str);
         headers.add(X_SIGNATURE,sign);
-        headers.add(X_ACCESS_KEY,param.getPublicKey());
+        headers.add(X_ACCESS_KEY,publicKey);
         return headers;
     }
 }

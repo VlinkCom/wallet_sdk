@@ -12,6 +12,9 @@ public class MapUtil {
         if (bean != null) {
             BeanMap beanMap = BeanMap.create(bean);
             for (Object key : beanMap.keySet()) {
+                if ("privateKey".equals(key.toString()) || "publicKey".equals(key.toString())) {
+                    continue;
+                }
                 Object o = beanMap.get(key);
                 if (Objects.isNull(o)) continue;
                 map.put(key + "", o);

@@ -9,11 +9,10 @@ import java.util.Objects;
 
 @Slf4j
 @Data
-@EqualsAndHashCode(callSuper = true)
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class WithdrawFlowParam extends BaseParam{
+public class WithdrawFlowParam {
 
     //(value = "业务id")
     private Long id;

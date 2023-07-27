@@ -2,19 +2,15 @@ package com.weibi.wallet.rest.sdk.params;
 
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.validator.constraints.NotBlank;
-import org.springframework.util.StringUtils;
 
 import java.math.BigDecimal;
-import java.util.Objects;
 
 @Slf4j
 @Data
-@EqualsAndHashCode(callSuper = true)
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class WithdrawCreateParam extends BaseParam{
+public class WithdrawCreateParam {
     
     //(value = "业务id")
     private String bizId;
@@ -42,19 +38,4 @@ public class WithdrawCreateParam extends BaseParam{
     
     //("提现手续费")
     private BigDecimal txFee;
-
-    @Override
-    public void validParam() {
-        super.validParam();
-        if (StringUtils.isEmpty(bizId)
-                || StringUtils.isEmpty(chain)
-                || StringUtils.isEmpty(txFromWallet)
-                || StringUtils.isEmpty(txToWallet)
-                || Objects.isNull(txAmount)
-                || Objects.isNull(txFee)
-        ) {
-            log.error("bizId:{},chain:{},txFromWallet:{},txToWallet:{},txAmount:{},txFee:{}不能为空", bizId, chain,txFromWallet, txToWallet, txAmount, txFee);
-            throw new RuntimeException("提现参数异常");
-        }
-    }
 }
