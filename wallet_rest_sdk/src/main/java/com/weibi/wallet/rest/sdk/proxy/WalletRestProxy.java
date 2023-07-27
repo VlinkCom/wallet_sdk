@@ -11,6 +11,7 @@ import java.util.List;
 public interface WalletRestProxy {
     /* 获取指定数量的地址 */
     CommonResponse<List<String>> getAddress(AddressParam param);
+    CommonResponse<List<String>> getUnUsedAddress(AddressParam param);
 
     /* 查询已分配地址 */
     CommonResponse<List<String>> getAllocatedAddress(AddressParam param);

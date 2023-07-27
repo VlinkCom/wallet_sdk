@@ -62,6 +62,14 @@ public class WalletRestProxyImpl implements WalletRestProxy {
     }
 
     @Override
+    public CommonResponse<List<String>> getUnUsedAddress(AddressParam param) {
+        String url = walletRestHost +"/address/unused?";
+        String body = doGet(url, param);
+        return gson.fromJson(body, new TypeToken<CommonResponse<List<String>>>() {
+        }.getType());
+    }
+
+    @Override
     public CommonResponse<List<String>> getAllocatedAddress(AddressParam param) {
         String url = walletRestHost +"/address/allocated?";
         String body = doGet(url, param);
