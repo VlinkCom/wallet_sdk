@@ -8,6 +8,7 @@ import com.weibi.wallet.rest.sdk.params.*;
 import com.weibi.wallet.rest.sdk.resp.CommonResponse;
 import com.weibi.wallet.rest.sdk.util.MapUtil;
 import com.weibi.wallet.rest.sdk.util.ParamsSingUtil;
+import com.weibi.wallet.rest.sdk.util.WalletRSAUtil;
 import com.weibi.wallet.rest.sdk.vo.*;
 import org.apache.commons.codec.digest.HmacUtils;
 import org.springframework.http.*;
@@ -242,7 +243,13 @@ public class WalletRestProxyImpl implements WalletRestProxy {
             throw new RuntimeException("不安全，并不合法的请求");
         }
         HttpHeaders headers = new HttpHeaders();
-        String sign = HmacUtils.hmacSha256Hex(privateKey, str);
+        String sign = null;
+        try {
+            sign = WalletRSAUtil.sign(str.getBytes(), privateKey);
+        } catch (Exception e) {
+            throw new RuntimeException("sign error");
+        }
+
         headers.add(X_SIGNATURE,sign);
         headers.add(X_ACCESS_KEY,publicKey);
         return headers;
