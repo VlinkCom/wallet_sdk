@@ -13,33 +13,23 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 public class DepositSucParam {
 
-    // from
-    private String fromAddress;
+    private Integer id;
 
     // to
-    private String toAddress;
+    private String addressTo;
 
     // 币种
-    private String coinType;
+    private String coin;
 
     // 充值数量
-    private BigDecimal amount;
-
-    // 手续费
-    private BigDecimal fee;
+    private String amount;
 
     // txId
     private String txId;
 
-    // DEPOSIT("DEPOSIT", "充值"),
-    // WITHDRAW("WITHDRAW", "提现"),
-    private String type;
+    private String confirmations;
 
-    // 描述
-    private String remark;
-
-    // 业务id 充值为空
-    private String bizId;
+    private String depositTime;
 
     private String chain;
 

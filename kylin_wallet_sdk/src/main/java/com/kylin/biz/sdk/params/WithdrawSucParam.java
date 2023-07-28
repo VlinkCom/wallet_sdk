@@ -5,8 +5,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
 
 @Data
 @Builder
@@ -14,55 +12,14 @@ import java.math.BigInteger;
 @NoArgsConstructor
 public class WithdrawSucParam {
 
+//    @ApiModelProperty(value = "业务id")
     private String bizId;
-
-    private Integer sId;
-
-    private String coin;
-
-    private String hash;
-    private String outputHash;
-
-
-    private String blockHash;
-
-    /** 时间的表示， 单位是毫秒 */
-    private BigInteger blockTime;
-
-    private BigDecimal amount;
-
-    private BigDecimal fee;
-
-    private String fromAccountOrAddress;
-
-    private String toAddress;
-
-    /** 来源于 PaymentCategory */
-    private String paymentCategory;
-
-    /** 来源于 PaymentStatusEnum，这个值的计算逻辑应该来源于 blockNumber或者confirmations */
+//    @ApiModelProperty(value = "提现地址")
+    private String addressTo;
+//    @ApiModelProperty(value = "hash地址")
+    private String txId;
+//    @ApiModelProperty(value = "确认数")
+    private String confirmations;
+//    @ApiModelProperty(value = "提现状态 -1->充提失败 0-> 充提确认  1->提现已提交  2->提现取消  3->充值确认中 4->提现已审核 5->等待确认中 6->系统错误  7->管理员回退")
     private String status;
-
-    /** ==========  block 高度 *,可能为空  ==========  */
-    private BigInteger blockNumber;
-
-    /**========== confirmations，可能为空 =========== */
-    private Integer confirmations = -1;
-
-    /**========== memo，可能为空 =========== */
-    private String memo ="";
-
-    private String blockInfoId;
-
-    private BigInteger gasPrice;
-
-    private String coboId;
-
-    private String chain;
-
-    private int outIndex;
-
-    private String inputTx;
-
-    private boolean spent;
 }

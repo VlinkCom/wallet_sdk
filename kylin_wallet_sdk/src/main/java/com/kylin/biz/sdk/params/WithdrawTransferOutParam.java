@@ -5,9 +5,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
-
 @Data
 @Builder
 @AllArgsConstructor
@@ -16,15 +13,11 @@ public class WithdrawTransferOutParam {
 
     private String bizId;
 
-    private Long     txId;
+    private String addressTo;
 
-    private String     toAddress;
+    private String amount;
 
-    private BigDecimal amount;
-
-    private String txHash;
-
-    private BigInteger nonce;
+    private String coin;
 
     private String chain;
 }

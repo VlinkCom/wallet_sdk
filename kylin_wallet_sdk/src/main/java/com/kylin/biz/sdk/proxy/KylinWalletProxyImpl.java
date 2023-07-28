@@ -32,14 +32,15 @@ public class KylinWalletProxyImpl implements KylinWalletProxy{
 
     @Override
     public CommonResponse<?> depositBlockInfoCallback(String urlPre, DepositBlockInfoParam dto) {
-        String url = urlPre +"/deposit/notify";
-        HttpHeaders headers = new HttpHeaders();
-        HttpEntity entity = new HttpEntity(dto, headers);
-        ResponseEntity<String> response = restTemplate.exchange( url, HttpMethod.POST, entity,String.class);
-//        if (response.getStatusCode() != HttpStatus.OK) {
-//            throw new RuntimeException("url:"+ url +"请求异常:" + response.getBody());
-//        }
-        return gson.fromJson(response.getBody(), CommonResponse.class);
+//        String url = urlPre +"/deposit/notify";
+//        HttpHeaders headers = new HttpHeaders();
+//        HttpEntity entity = new HttpEntity(dto, headers);
+//        ResponseEntity<String> response = restTemplate.exchange( url, HttpMethod.POST, entity,String.class);
+////        if (response.getStatusCode() != HttpStatus.OK) {
+////            throw new RuntimeException("url:"+ url +"请求异常:" + response.getBody());
+////        }
+//        return gson.fromJson(response.getBody(), CommonResponse.class);
+        return CommonResponse.success();
     }
 
     @Override
