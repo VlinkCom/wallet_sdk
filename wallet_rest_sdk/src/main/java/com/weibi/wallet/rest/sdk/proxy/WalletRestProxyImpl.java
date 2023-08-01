@@ -18,10 +18,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 public class WalletRestProxyImpl implements WalletRestProxy {
@@ -99,7 +96,7 @@ public class WalletRestProxyImpl implements WalletRestProxy {
     }
 
     public static void main(String[] args) {
-        String pub = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAh3Fpa6B/0kiZ/7LTt7tTUUwEO9ucKPCFPWQJpBqaSboc/IlLHibTN40uAY5j98cvad+df+/FwuaJKlfMBRB2tlFcU7sQ+NcOtqXtbUGVput+k1we6Szrb0bgGPFk5q/syeMZTL2USdpzP+5hd0DwgZRgkFzPChQXcvQlRF6lEtvgoWzHBqBCep+I0zj10uxbwI1bSsSgsu6MwvOvaAhmprXY3rUICQtcyW0y1aoLQFPbxruJVRcDvvL0M/4HO1D2gUOEuh2Bmgz3eGXIWwb+3Ej5AQwStDlUjJad8KJhlofRDRKBURxwLbOC9fPJlerIBIPJhIGikXZX/y6FzgY+PQIDAQAB";
+        String pub = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAmiWYhCDa3VFJmztk16KxgFcNzSv0jt9zfDWb0bzfeV8MVRiyvEnByyyRBWsu2V+lcrrCfM54U9m+FdqblBIn8tshU2lRO4ZbnJm2TJHDlqk4hez0xRcq4NOTz42Ii3iZN70nzVD6B2YBeRgnnRFRnHBBQuTQVUVKYmoAJpbJ77pX7QWbUMF4vsuXH7nY+hEYLL+4j+iMMpMQZVkZ36T5I6og8fT1fsI+RjBm5gPn/d4AKXWgtYlx2gDfTgRg+uLuR8ViKEIMz1SwdbBwtEYS3schbRYXNzUNM//EjlxjN+G8jGCVGVaB9uZ9aNnZ61F9XDGPlIPEOCjAFG9Ma6mrgwIDAQAB";
 
         String pri = "MIIEvwIBADANBgkqhkiG9w0BAQEFAASCBKkwggSlAgEAAoIBAQCaJZiEINrdUUmbO2TXorGAVw3NK/SO33N8NZvRvN95XwxVGLK8ScHLLJEFay7ZX6VyusJ8znhT2b4V2puUEify2yFTaVE7hlucmbZMkcOWqTiF7PTFFyrg05PPjYiLeJk3vSfNUPoHZgF5GCedEVGccEFC5NBVRUpiagAmlsnvulftBZtQwXi+y5cfudj6ERgsv7iP6IwykxBlWRnfpPkjqiDx9PV+wj5GMGbmA+f93gApdaC1iXHaAN9OBGD64u5HxWIoQgzPVLB1sHC0RhLexyFtFhc3NQ0z/8SOXGM34byMYJUZVoH25n1o2dnrUX1cMY+Ug8Q4KMAUb0xrqauDAgMBAAECggEAZtWX9uWYPTeCfF3WO4kdE3qACZU+VKY7e+yjo/t1tpmzN33/l185OtrjcJL9sSR+0phHMU3otj+38Qpi6hhmsDyB8gx7ldNfgIyHMnO34OXJgIcBEA8RmuVrYXaRVkJBLQ8y42UXOCJT7z4vBzjLkirNTtwpJAnSwu7mZNgJpbRI5A4wW7ZN7CcTqFzbveA9rL5n7ma85UBjJA8ZXG4PdKySOav2nEM2H5qwQ+c6/C2QBT83m+Yb0GjQrzcv0utQwyqz6JqySMw3BEQJyZvdBvteuny+vIhG6qQQYk6IDQr1RROZB+QuEZlfF5xDE0py7xx3XWUaFdLB8QYcWmlv6QKBgQDKoOgNN6MdaWBvsaXJnoKEUd/J3aBCQEr8kQKRG4pymrK2ZHi3sJSjVFTwUSuWPDGlGJ9la/dT0fTep0AtkmSAsrbINvpC8hqxqWaxTk9FsMslMqjSGhwKMFey9U3ud66Z0H+XLuWb+6wCO+b3+Pl0eLKbez5ztzTlIEfgCDQ1jQKBgQDCv5rosqoSjKtVzq0d/1p9yVHubB7BYhHI4/zkkX5jdRloKYu4oYJPz3zal66SWBTNNFYQyHN9Z9GJZuo+Fm/NqMHm9iGE1UEpzWx2pex1EGCmxVRfNAtpwgTDld2mY4QYYCr9mkNVI82b/STZCZkde/6/q8wSVR1h7P4eKhP5TwKBgQDFKlDiG5MymUjnJjsltoFVc72IVYkNLjZJEGko/V14KqNe6uC0DLR1QSftN25sH2JHPXBMZgQhoZjd1mySa3Iz8LH+m9Bkt+PVn/p26LYmH+Nr7KFs308NcwDC+AK+2eIhdUnRuCZf40H6YoNaIv/In3Fb7U5Vlp13njOSASmcOQKBgQCbsim7vhMgT1wvdtOKtvr2s3wQPFp+StRjInqtlfBQvW65ivWMf3s6KWztKfVERK0kvaHNOySx7s1jp2bAipmJ91BGQSLdGs1FCVmcpdycXqKW0g45KtexDo9WertA6jDSeBgGtkz8hWo9Oq454mWKX/Zz8HpvcaLTBnDHVuavGwKBgQCayQds0BKGsC5wPVwmNjJj7P9SCwGnWht//P9HtOJj5wqxB0VULyw8kvwuhzyp/0yNu6IsdiaZ+69GsGkNyYGjmsGi7+20DlZLWtOy+i5YaIteL55iARsxQfWH38yRYHtK4ZRrFXWNpQlkT4/r6huDVIgo07bj30ETQimns4OxFQ==";
 
@@ -109,11 +106,11 @@ public class WalletRestProxyImpl implements WalletRestProxy {
 
         WithdrawCreateParam build = WithdrawCreateParam.builder()
                 .bizId("xxxxxxxxxxxxxxxxx")
-                .txCoin("TRX")
-                .chain("TRX")
+                .txCoin("USDTTEST")
+                .chain("BEP20")
                 .userId("1234")
-                .txFromWallet("TUh2HLpFPgGLtfnRPKUhwC4uBuZvzisYeN")
-                .txToWallet("TT6CG45wSLo4qQahj6NeuRFvvksi2zvRgt")
+                .txFromWallet("0x1acb4ca7c817b0278bb4434ed9beea73166cb152")
+                .txToWallet("0x8e69727925e8b6ca76079854bedd25a6241148b4")
                 .txAmount(BigDecimal.TEN)
                 .txFee(BigDecimal.ONE)
                 .build();
@@ -169,8 +166,8 @@ public class WalletRestProxyImpl implements WalletRestProxy {
     public CommonResponse<TxEntityVo> createWithdraw(WithdrawCreateParam param) {
         String url = walletRestHost +"/withdraw/create?";
         Map<String, Object> params = MapUtil.beanToMap(param);
-        String body = doGet(url, params);
-        return gson.fromJson(body, new TypeToken<CommonResponse<List<TxEntityVo>>>() {
+        String body = doPost(url, new HashMap<>(), param);
+        return gson.fromJson(body, new TypeToken<CommonResponse<TxEntityVo>>() {
         }.getType());
     }
 
@@ -238,9 +235,10 @@ public class WalletRestProxyImpl implements WalletRestProxy {
         return response.getBody();
     }
 
-    private String doPost(String url, Map<String, Object> params, Map<String, Object> body) {
+    private String doPost(String url, Map<String, Object> params, Object body) {
         String str = ParamsSingUtil.signToString(params);
         HttpHeaders headers = buildHeader(str);
+        headers.add("Content-Type", "application/json;charset:utf-8;");
         HttpEntity entity = new HttpEntity(body, headers);
         ResponseEntity<String> response = restTemplate.exchange( url + str,HttpMethod.POST, entity,String.class);
         if (response.getStatusCode() != HttpStatus.OK) {
