@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.kylin.biz.sdk.params.*;
 import com.kylin.biz.sdk.resp.CommonResponse;
+import com.kylin.biz.sdk.util.EnvUtil;
 import com.kylin.biz.sdk.util.PUtils;
 import com.kylin.biz.sdk.util.WalletRSAUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -13,6 +14,7 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 
 @Slf4j
@@ -40,6 +42,15 @@ public class KylinWalletProxyImpl implements KylinWalletProxy{
             this.privateKey = PUtils.decrypt(privateKey);
         } catch (Exception ex) {
             this.privateKey = "";
+        }
+
+        if(!EnvUtil.isTestOrQa()) {
+            try {
+                this.privateKey =PUtils.decrypt(privateKey);
+            } catch (UnsupportedEncodingException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
         }
     }
 
