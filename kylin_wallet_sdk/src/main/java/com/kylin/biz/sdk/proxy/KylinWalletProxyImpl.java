@@ -45,7 +45,7 @@ public class KylinWalletProxyImpl implements KylinWalletProxy{
 
     @Override
     public CommonResponse<?> depositSucCallback(String urlPre, DepositSucParam dto) {
-        String url = urlPre +"/checkSum";
+        String url = urlPre +"/depositCallback";
         HttpHeaders headers = new HttpHeaders();
         HttpEntity entity = new HttpEntity(dto, headers);
         ResponseEntity<String> response = restTemplate.exchange( url, HttpMethod.POST, entity,String.class);
@@ -67,7 +67,7 @@ public class KylinWalletProxyImpl implements KylinWalletProxy{
 
     @Override
     public CommonResponse<?> withdrawTransferOutCallback(String urlPre, WithdrawTransferOutParam dto) {
-//        String url = kylinHost +"/checkSum";
+        String url = urlPre +"/checkSum";
 //        HttpHeaders headers = new HttpHeaders();
 //        HttpEntity entity = new HttpEntity(dto, headers);
 //        ResponseEntity<String> response = restTemplate.exchange( url, HttpMethod.POST, entity,String.class);
