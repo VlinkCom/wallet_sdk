@@ -68,11 +68,10 @@ public class KylinWalletProxyImpl implements KylinWalletProxy{
     @Override
     public CommonResponse<?> withdrawTransferOutCallback(String urlPre, WithdrawTransferOutParam dto) {
         String url = urlPre +"/checkSum";
-//        HttpHeaders headers = new HttpHeaders();
-//        HttpEntity entity = new HttpEntity(dto, headers);
-//        ResponseEntity<String> response = restTemplate.exchange( url, HttpMethod.POST, entity,String.class);
-//        return gson.fromJson(response.getBody(), CommonResponse.class);
-        return CommonResponse.success();
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity entity = new HttpEntity(dto, headers);
+        ResponseEntity<String> response = restTemplate.exchange( url, HttpMethod.POST, entity,String.class);
+        return gson.fromJson(response.getBody(), CommonResponse.class);
     }
 
     @Override
