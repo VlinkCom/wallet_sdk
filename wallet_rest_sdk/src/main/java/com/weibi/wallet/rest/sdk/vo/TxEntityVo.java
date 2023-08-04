@@ -44,9 +44,9 @@ public class TxEntityVo {
 
     private BigDecimal txNetworkFee;
 
-    private Date updateTime;
+    private Long updateTime;
 
-    private Date createdTime;
+    private Long createdTime;
 
     private String extraInfo;
 

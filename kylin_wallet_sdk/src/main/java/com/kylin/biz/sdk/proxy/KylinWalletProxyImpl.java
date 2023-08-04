@@ -24,6 +24,7 @@ public class KylinWalletProxyImpl implements KylinWalletProxy{
     private final String X_SIGNATURE = "X_SIGNATURE";
     private final String X_ACCESS_KEY = "X_ACCESS_KEY";
 
+
     public final String publicKey;
     public String privateKey;
     private final RestTemplate restTemplate;
@@ -37,13 +38,7 @@ public class KylinWalletProxyImpl implements KylinWalletProxy{
                 new MappingJackson2HttpMessageConverter();
         mappingJackson2HttpMessageConverter.setSupportedMediaTypes(Arrays.asList(MediaType.APPLICATION_JSON, MediaType.APPLICATION_OCTET_STREAM));
         restTemplate.getMessageConverters().add(mappingJackson2HttpMessageConverter);
-
-        try {
-            this.privateKey = PUtils.decrypt(privateKey);
-        } catch (Exception ex) {
-            this.privateKey = "";
-        }
-
+        this.privateKey = privateKey;
         if(!EnvUtil.isTestOrQa()) {
             try {
                 this.privateKey =PUtils.decrypt(privateKey);
@@ -122,7 +117,6 @@ public class KylinWalletProxyImpl implements KylinWalletProxy{
         } catch (Exception e) {
             throw new RuntimeException("sign error");
         }
-
         headers.add(X_SIGNATURE,sign);
         headers.add(X_ACCESS_KEY,publicKey);
         return headers;

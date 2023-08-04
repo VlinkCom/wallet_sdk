@@ -14,6 +14,8 @@ public interface WalletRestProxy {
     CommonResponse<List<String>> getAddress(AddressParam param);
     CommonResponse<List<String>> getUnUsedAddress(AddressParam param);
 
+    CommonResponse<Boolean> addressVerify(AddressVerifyParam param);
+
     /* 查询已分配地址 */
     CommonResponse<List<String>> getAllocatedAddress(AddressParam param);
 
