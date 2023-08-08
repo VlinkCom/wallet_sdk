@@ -21,13 +21,13 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @ConditionalOnProperty(prefix = "wallet", name = "support", havingValue = "udun")
 @Component
 public class UDunWalletWalletRestProxy implements WalletWalletRestProxy {
+
     private final UdunClient udunClient;
     private Map<String, Coin> coinMap;
     public UDunWalletWalletRestProxy() {
@@ -43,6 +43,7 @@ public class UDunWalletWalletRestProxy implements WalletWalletRestProxy {
     }
 
     private Coin getCoinByName(String name) {
+        // 从数据库中获取 udun钱包映射
         if (CollectionUtils.isEmpty(coinMap)) {
             coinMap = udunClient.listSupportCoin(false).stream().collect(Collectors.toMap(Coin::getName, Function.identity()));
         }
