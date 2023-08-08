@@ -1,5 +1,8 @@
 package com.weibi.wallet.rest.sdk.proxy;
 
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
 import com.uduncloud.sdk.client.UdunClient;
 import com.uduncloud.sdk.domain.Address;
 import com.uduncloud.sdk.domain.Coin;
@@ -12,15 +15,21 @@ import com.weibi.wallet.rest.sdk.resp.CommonResponse;
 import com.weibi.wallet.rest.sdk.vo.*;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.TimeUnit;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @ConditionalOnProperty(prefix = "wallet", name = "support", havingValue = "udun")
 @Component
 public class UDunWalletWalletRestProxy implements WalletWalletRestProxy {
     private final UdunClient udunClient;
+    private Map<String, Coin> coinMap;
     public UDunWalletWalletRestProxy() {
         String udunKey = System.getenv("UDUN_KEY");
         String gateway = System.getenv("UDUN_GATEWAY");
@@ -30,10 +39,27 @@ public class UDunWalletWalletRestProxy implements WalletWalletRestProxy {
             throw new RuntimeException("没有配置udun钱包的相关配置");
         }
         udunClient = new UdunClient(gateway, merchantId, udunKey, callback);
+        coinMap = udunClient.listSupportCoin(false).stream().collect(Collectors.toMap(Coin::getName, Function.identity()));
+    }
+
+    private Coin getCoinByName(String name) {
+        if (CollectionUtils.isEmpty(coinMap)) {
+            coinMap = udunClient.listSupportCoin(false).stream().collect(Collectors.toMap(Coin::getName, Function.identity()));
+        }
+        Coin coin = coinMap.get(name);
+        if (Objects.isNull(coin)) {
+            coinMap = udunClient.listSupportCoin(false).stream().collect(Collectors.toMap(Coin::getName, Function.identity()));
+        }
+        coin = coinMap.get(name);
+        if (Objects.isNull(coin)) {
+            throw new RuntimeException("udun wallet do not have the coin:" + coin);
+        }
+        return coin;
     }
 
     @Override
     public CommonResponse<List<String>> getUnUsedAddress(AddressParam addressParam) {
+        Coin coin = getCoinByName(addressParam.getCoin());
         UDunAddressParam param = new UDunAddressParam();
         Address address = udunClient.createAddress(param.getMainCoinType(), "", "", param.getCallUrl());
         return CommonResponse.successOf(Collections.singletonList(address.getAddress()));
@@ -42,6 +68,7 @@ public class UDunWalletWalletRestProxy implements WalletWalletRestProxy {
     // sign=md5(body + key + nonce + timestamp).toLowerCase()
     @Override
     public CommonResponse<TxEntityVo> createWithdraw(WithdrawCreateParam withdrawCreateParam) {
+        Coin coin = getCoinByName(withdrawCreateParam.getTxCoin());
         UDunWithdrawCreateParam param = new UDunWithdrawCreateParam();
         ResultMsg withdraw = udunClient.withdraw(param.getAddress(), param.getAmount(), param.getMainCoinType(), param.getCoinType(), param.getBizId(), param.getMemo(), param.getCallUrl());
         if (withdraw.getCode().equals(200)) {
@@ -83,6 +110,7 @@ public class UDunWalletWalletRestProxy implements WalletWalletRestProxy {
     @Override
     public CommonResponse<List<CoinConfigVo>> listCoinConfig() {
         List<Coin> coins = udunClient.listSupportCoin(false);
+        coinMap = coins.stream().collect(Collectors.toMap(Coin::getName, Function.identity()));
         List<CoinConfigVo> collect = coins.stream().map(coin -> {
             CoinConfigVo coinConfigVo = new CoinConfigVo();
             return coinConfigVo;
@@ -107,6 +135,7 @@ public class UDunWalletWalletRestProxy implements WalletWalletRestProxy {
 
     @Override
     public CommonResponse<Boolean> addressVerify(AddressVerifyParam verifyParam) {
+        Coin coin = getCoinByName(verifyParam.getCoinType());
         UDunAddressVerifyParam param = new UDunAddressVerifyParam();
         boolean b = udunClient.checkAddress(param.getMainCoinType(), param.getAddress());
         return CommonResponse.successOf(b);

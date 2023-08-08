@@ -46,6 +46,10 @@
             <artifactId>udun-sdk</artifactId>
             <version>2.1.4</version>
         </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+        </dependency>
 
     </dependencies>
 
