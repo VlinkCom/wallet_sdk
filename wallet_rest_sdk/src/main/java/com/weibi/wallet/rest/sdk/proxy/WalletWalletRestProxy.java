@@ -4,14 +4,11 @@ package com.weibi.wallet.rest.sdk.proxy;
 import com.weibi.wallet.rest.sdk.params.*;
 import com.weibi.wallet.rest.sdk.resp.CommonResponse;
 import com.weibi.wallet.rest.sdk.vo.*;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
-public interface WalletRestProxy {
-    /* 获取指定数量的地址 */
-    CommonResponse<List<String>> getAddress(AddressParam param);
+public interface WalletWalletRestProxy {
+
     CommonResponse<List<String>> getUnUsedAddress(AddressParam param);
 
     CommonResponse<Boolean> addressVerify(AddressVerifyParam param);
@@ -28,9 +25,6 @@ public interface WalletRestProxy {
 
     CommonResponse<PageInfo<WalletTransactionVo>> pageTransactionRecords(TransactionPageParam param);
 
-    CommonResponse<List<WalletTransactionVo>> flowDepositRecords(TransactionFlowParam param);
-
-    CommonResponse<PageInfo<WalletTransactionVo>> pageDepositRecords(TransactionPageParam param);
 
     CommonResponse<WalletTransactionVo> findByHash(TransactionHashParam param);
 

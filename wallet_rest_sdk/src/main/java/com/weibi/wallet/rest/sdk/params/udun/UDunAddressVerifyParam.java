@@ -1,4 +1,4 @@
-package com.weibi.wallet.rest.sdk.params;
+package com.weibi.wallet.rest.sdk.params.udun;
 
 
 import lombok.AllArgsConstructor;
@@ -10,8 +10,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class AddressVerifyParam {
+public class UDunAddressVerifyParam {
     private String address;
 
-    private String coinType;
+    private String mainCoinType;
 }

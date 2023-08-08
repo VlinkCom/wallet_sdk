@@ -3,7 +3,6 @@ package com.weibi.wallet.rest.sdk.proxy;
 
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.weibi.wallet.rest.sdk.params.*;
 import com.weibi.wallet.rest.sdk.resp.CommonResponse;
@@ -11,18 +10,20 @@ import com.weibi.wallet.rest.sdk.util.MapUtil;
 import com.weibi.wallet.rest.sdk.util.ParamsSingUtil;
 import com.weibi.wallet.rest.sdk.util.WalletRSAUtil;
 import com.weibi.wallet.rest.sdk.vo.*;
-import org.apache.commons.codec.digest.HmacUtils;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.http.*;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 
-import java.math.BigDecimal;
 import java.util.*;
 
 
-public class WalletRestProxyImpl implements WalletRestProxy {
+@ConditionalOnProperty(prefix = "wallet", name = "support", havingValue = "default")
+@Component
+public class WalletWalletRestProxyImpl implements WalletWalletRestProxy {
 
     private final String walletRestHost;
 
@@ -36,10 +37,16 @@ public class WalletRestProxyImpl implements WalletRestProxy {
 
     private final Gson gson = new Gson();
 
-    public WalletRestProxyImpl(String walletRestHost, String publicKey, String privateKey) {
-        this.walletRestHost = walletRestHost;
-        this.publicKey = publicKey;
-        this.privateKey = privateKey;
+    public WalletWalletRestProxyImpl() {
+        this.walletRestHost = System.getenv("WALLET_HOST_URL");
+        this.publicKey = System.getenv("DEPOSIT_PUBLIC_KEY");
+        this.privateKey = System.getenv("DEPOSIT_PRIVATE_KEY");
+        if (StringUtils.isEmpty(walletRestHost)
+                || StringUtils.isEmpty(publicKey)
+                || StringUtils.isEmpty(privateKey)
+        ) {
+            throw new RuntimeException("没有配置默认钱包的相关配置无效");
+        }
         SimpleClientHttpRequestFactory httpRequestFactory = new SimpleClientHttpRequestFactory();
         httpRequestFactory.setConnectTimeout(5000);
         httpRequestFactory.setReadTimeout(8000);
@@ -48,15 +55,6 @@ public class WalletRestProxyImpl implements WalletRestProxy {
                 new MappingJackson2HttpMessageConverter();
         mappingJackson2HttpMessageConverter.setSupportedMediaTypes(Arrays.asList(MediaType.APPLICATION_JSON, MediaType.APPLICATION_OCTET_STREAM));
         restTemplate.getMessageConverters().add(mappingJackson2HttpMessageConverter);
-    }
-
-    @Override
-    public CommonResponse<List<String>> getAddress(AddressParam param) {
-        String url = walletRestHost +"/address/un_used?";
-        Map<String, Object> params = MapUtil.beanToMap(param);
-        String body = doGet(url, params);
-        return gson.fromJson(body, new TypeToken<CommonResponse<List<String>>>() {
-        }.getType());
     }
 
     @Override
@@ -102,68 +100,6 @@ public class WalletRestProxyImpl implements WalletRestProxy {
         String url = walletRestHost +"/coin/list?";
         String body = doGet(url, new HashMap<>());
         return gson.fromJson(body, new TypeToken<CommonResponse<List<CoinConfigVo>>>() {
-        }.getType());
-    }
-
-    public static void main(String[] args) throws Exception {
-        String pub = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCI6+Q+M3FrqKFiHQu5M56KZ2j0QvNd3iephm6rg3Ib+UIcu2f5wTFZnF7k8qWbgnWcX0bRS0ozgwGYPeKFCpdCjqQ0XRLsnhP87KZ6eARU0Xj7lEZbr0mryZsIPv8iVH/GwNhe/vqG/3Y8QbocBN0f/CM6F0JNg72oyZtQsHli5wIDAQAB";
-
-        String pri = "MIICdwIBADANBgkqhkiG9w0BAQEFAASCAmEwggJdAgEAAoGBAIjr5D4zcWuooWIdC7kznopnaPRC813eJ6mGbquDchv5Qhy7Z/nBMVmcXuTypZuCdZxfRtFLSjODAZg94oUKl0KOpDRdEuyeE/zspnp4BFTRePuURluvSavJmwg+/yJUf8bA2F7++ob/djxBuhwE3R/8IzoXQk2DvajJm1CweWLnAgMBAAECgYAs+6rJ0KbTotwaWsaOOuo8OEsf7Jr93M2VAWh8irvDevmAbQV05UasVRZMC3fjBlJTZG3ktuKS19h/Rt2Tre4RYK2n48SwgGEtU9hkJ+DlJ+g2cMQTURfIJy860lSnaJc+jibh/PIpWVlJLyzqeNLlvxudz4zBdGDkoGGIGWHBMQJBANV0x8Mw4xDp4MA7Q4cIEn1fnmwnycl3GZQAr4ieCefVGobqHXyVTOlGDjdLPVly9D54Sd9sT1ZKCfi96umVeDkCQQCkNhBaz/kzu6Uk5VjS/Jp+dUq9V7MXl5tFFDSSksY0EDXPjBFntn2LJBTgWpDv3DAFayZ+Q7lelpOQmTEYFnQfAkEAoCHMnrz1C0I5Ll0HSqyemll6Uq8CrVXg5WwiQz40NixjiyTk3ApxOWspzQdvzcP0QU0iNi9d0WEX2/g12+ga2QJAdD2xJhfCmFRketG/JtuZoZr15UKHjFPNngDHllo/4+r1rI3CZGBSToSkIoz5vFFpzOwku4zFU6fTnbBTiHGckQJBAJrdKbj7M5u1xstkcYt3LZne9eOiBUywXKNwqJE4Z29QUpLrXAT6w14ewmQVXSYInv97GE6rcDmgSK+ikNUM8x4=";
-
-
-        String walletPub = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCxaBlputGXja33arkkHS9tpLtfOHxukbMK/WEI9Kiku5VjQRhaG86Td4y1XWoiRCowXjbTu3zMjzR7anu7wMfGk4e1JN1mDLr87VrCDvzxvuYa6MNcOVQSQ45gBNXBD5maZlo1YiwO+bmWLruOX4VlsUL5sGcrYDlVhY6JfuVUkwIDAQAB";
-
-
-        String walletPri = "MIICdwIBADANBgkqhkiG9w0BAQEFAASCAmEwggJdAgEAAoGBALFoGWm60ZeNrfdquSQdL22ku184fG6Rswr9YQj0qKS7lWNBGFobzpN3jLVdaiJEKjBeNtO7fMyPNHtqe7vAx8aTh7Uk3WYMuvztWsIO/PG+5hrow1w5VBJDjmAE1cEPmZpmWjViLA75uZYuu45fhWWxQvmwZytgOVWFjol+5VSTAgMBAAECgYEAmkwYDkVWFaI8NHy2GhroLUyhSuguEVzXhC9sPgXMx7n+7BypuXWF7eyEjRl6PeNbbkYDGZRvrtq+oriydVHubehMNZ4rnRKT6A4oSrEr+yiUkSu/7ZVtDJLp49h4bFZt3y939ThC/H1gkMbd2xrk2uaYukdEc4nLDa+81N3xqoECQQD6WoxeP0XtHW69wyL9cU4Sk5lVgTiKAJUC1fSTTm4YK8Gyh3ghL3jCZF2SGhv/Q5SpKtwWybLxWpgGP/Dssy0pAkEAtWhhiMbkKiym7qpfd1cywtn9WiAABLgxC7sVhlAUDv03muRJs9p30WCVUDbMV0ZahQGDB6yDLxnY3QAtKhPvWwJAbkvANbF4lCt4Y3/6BWCKveJrFmGU0C/LdnFejBtso5d7gbTvNuecM0BWfQylswNKFnF8f0mjXXPFMFOxSAb0aQJAUkHbgB7XlPwcUbp1gXLLtKkOBZDfEUTIEI6rivTCs61ESnrbpK8ah5lo+y9t5uEi6I6v8IncDj6FJGkREbRqYwJBAJbPwdNOmd2jYKc2/96uCwdbQLL4iZQBdDhVkQdUqlk6X3EK8lpgt7dZfDi0ASZbt3q1TYtVGj+s/YPnETloNXs=";
-
-
-
-        WalletRestProxyImpl walletRestProxy = new WalletRestProxyImpl(
-                "http://localhost:18081",
-                pub, pri);
-
-
-        // http://localhost:18081
-        // http://wallet.fkw2.xyz/rest
-        // https://wallet.druex.net/rest
-
-//        AddressParam build = AddressParam.builder()
-//                .coin("TRX")
-//                .size(1)
-//                .build();
-//        CommonResponse<List<String>> unUsedAddress = walletRestProxy.getUnUsedAddress(build);
-//        System.out.println(new Gson().toJson(unUsedAddress));
-
-
-//        WithdrawCreateParam build1 = WithdrawCreateParam.builder()
-//                .bizId("1024")
-//                .userId("1234")
-//                .txCoin("TRX")
-//                .chain("TRX")
-//                .txToWallet("xsddf")
-//                .txFromWallet("xxx")
-//                .txFee(BigDecimal.ONE)
-//                .txAmount(BigDecimal.TEN)
-//                .build();
-//        CommonResponse<TxEntityVo> withdraw = walletRestProxy.createWithdraw(build1);
-//        System.out.println("xxxx");
-    }
-
-    @Override
-    public CommonResponse<List<WalletTransactionVo>> flowDepositRecords(TransactionFlowParam param) {
-        String url = walletRestHost +"/deposit/low?";
-        Map<String, Object> params = MapUtil.beanToMap(param);
-        String body = doGet(url, params);
-        return gson.fromJson(body, new TypeToken<CommonResponse<List<WalletTransactionVo>>>() {
-        }.getType());
-    }
-
-    @Override
-    public CommonResponse<PageInfo<WalletTransactionVo>> pageDepositRecords(TransactionPageParam param) {
-        String url = walletRestHost +"/deposit/page?";
-        Map<String, Object> params = MapUtil.beanToMap(param);
-        String body = doGet(url, params);
-        return gson.fromJson(body, new TypeToken<CommonResponse<PageInfo<WalletTransactionVo>>>() {
         }.getType());
     }
 
