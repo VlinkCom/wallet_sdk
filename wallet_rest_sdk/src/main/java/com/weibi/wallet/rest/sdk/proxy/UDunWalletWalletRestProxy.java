@@ -13,6 +13,7 @@ import com.weibi.wallet.rest.sdk.params.udun.UDunAddressVerifyParam;
 import com.weibi.wallet.rest.sdk.params.udun.UDunWithdrawCreateParam;
 import com.weibi.wallet.rest.sdk.resp.CommonResponse;
 import com.weibi.wallet.rest.sdk.vo.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
@@ -30,6 +31,7 @@ public class UDunWalletWalletRestProxy implements WalletWalletRestProxy {
 
     private final UdunClient udunClient;
     private Map<String, Coin> coinMap;
+
     public UDunWalletWalletRestProxy() {
         String udunKey = System.getenv("UDUN_KEY");
         String gateway = System.getenv("UDUN_GATEWAY");
@@ -114,6 +116,12 @@ public class UDunWalletWalletRestProxy implements WalletWalletRestProxy {
         coinMap = coins.stream().collect(Collectors.toMap(Coin::getName, Function.identity()));
         List<CoinConfigVo> collect = coins.stream().map(coin -> {
             CoinConfigVo coinConfigVo = new CoinConfigVo();
+            coinConfigVo.setCode(coin.getSymbol());
+            coinConfigVo.setMainCoinType(coin.getMainSymbol());
+            coinConfigVo.setCoinFullName(coin.getName());
+            coinConfigVo.setMaxPrecision(Integer.parseInt(coin.getDecimals()));
+            boolean serious = coin.getTokenStatus().equals(1);
+            coinConfigVo.setSerious(serious);
             return coinConfigVo;
         }).collect(Collectors.toList());
         return CommonResponse.successOf(collect);
