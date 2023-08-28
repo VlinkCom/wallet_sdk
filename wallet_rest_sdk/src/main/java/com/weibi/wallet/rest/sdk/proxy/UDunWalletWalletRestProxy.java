@@ -64,6 +64,7 @@ public class UDunWalletWalletRestProxy implements WalletWalletRestProxy {
     public CommonResponse<List<String>> getUnUsedAddress(AddressParam addressParam) {
         Coin coin = getCoinByName(addressParam.getCoin());
         UDunAddressParam param = new UDunAddressParam();
+        param.setMainCoinType(coin.getMainCoinType());
         Address address = udunClient.createAddress(param.getMainCoinType(), "", "", param.getCallUrl());
         return CommonResponse.successOf(Collections.singletonList(address.getAddress()));
     }
@@ -73,7 +74,12 @@ public class UDunWalletWalletRestProxy implements WalletWalletRestProxy {
     public CommonResponse<TxEntityVo> createWithdraw(WithdrawCreateParam withdrawCreateParam) {
         Coin coin = getCoinByName(withdrawCreateParam.getTxCoin());
         UDunWithdrawCreateParam param = new UDunWithdrawCreateParam();
-        ResultMsg withdraw = udunClient.withdraw(param.getAddress(), param.getAmount(), param.getMainCoinType(), param.getCoinType(), param.getBizId(), param.getMemo(), param.getCallUrl());
+        param.setAddress(withdrawCreateParam.getTxToWallet());
+        param.setAmount(withdrawCreateParam.getTxAmount());
+        param.setMainCoinType(coin.getMainCoinType());
+        param.setCoinType(coin.getCoinType());
+        param.setBizId(withdrawCreateParam.getBizId());
+        ResultMsg withdraw = udunClient.withdraw(param.getAddress(), param.getAmount(), param.getMainCoinType(), param.getCoinType(), param.getBizId(), param.getMemo());
         if (withdraw.getCode().equals(200)) {
             return CommonResponse.successOf(new TxEntityVo());
         }
@@ -146,6 +152,8 @@ public class UDunWalletWalletRestProxy implements WalletWalletRestProxy {
     public CommonResponse<Boolean> addressVerify(AddressVerifyParam verifyParam) {
         Coin coin = getCoinByName(verifyParam.getCoinType());
         UDunAddressVerifyParam param = new UDunAddressVerifyParam();
+        param.setAddress(verifyParam.getAddress());
+        param.setMainCoinType(coin.getMainCoinType());
         boolean b = udunClient.checkAddress(param.getMainCoinType(), param.getAddress());
         return CommonResponse.successOf(b);
     }
