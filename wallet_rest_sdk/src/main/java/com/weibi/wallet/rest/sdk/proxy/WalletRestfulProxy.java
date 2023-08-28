@@ -7,7 +7,7 @@ import com.weibi.wallet.rest.sdk.vo.*;
 
 import java.util.List;
 
-public interface WalletWalletRestProxy {
+public interface WalletRestfulProxy {
 
     CommonResponse<List<String>> getUnUsedAddress(AddressParam param);
 

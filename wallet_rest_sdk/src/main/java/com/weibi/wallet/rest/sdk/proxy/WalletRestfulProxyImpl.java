@@ -23,7 +23,7 @@ import java.util.*;
 
 @ConditionalOnProperty(prefix = "wallet", name = "support", havingValue = "default")
 @Component
-public class WalletWalletRestProxyImpl implements WalletWalletRestProxy {
+public class WalletRestfulProxyImpl implements WalletRestfulProxy {
 
     private final String walletRestHost;
 
@@ -37,7 +37,7 @@ public class WalletWalletRestProxyImpl implements WalletWalletRestProxy {
 
     private final Gson gson = new Gson();
 
-    public WalletWalletRestProxyImpl() {
+    public WalletRestfulProxyImpl() {
         this.walletRestHost = System.getenv("WALLET_HOST_URL");
         this.publicKey = System.getenv("DEPOSIT_PUBLIC_KEY");
         this.privateKey = System.getenv("DEPOSIT_PRIVATE_KEY");

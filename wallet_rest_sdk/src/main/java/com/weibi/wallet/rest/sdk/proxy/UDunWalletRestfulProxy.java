@@ -1,8 +1,5 @@
 package com.weibi.wallet.rest.sdk.proxy;
 
-import com.google.common.cache.CacheBuilder;
-import com.google.common.cache.CacheLoader;
-import com.google.common.cache.LoadingCache;
 import com.uduncloud.sdk.client.UdunClient;
 import com.uduncloud.sdk.domain.Address;
 import com.uduncloud.sdk.domain.Coin;
@@ -13,7 +10,6 @@ import com.weibi.wallet.rest.sdk.params.udun.UDunAddressVerifyParam;
 import com.weibi.wallet.rest.sdk.params.udun.UDunWithdrawCreateParam;
 import com.weibi.wallet.rest.sdk.resp.CommonResponse;
 import com.weibi.wallet.rest.sdk.vo.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
@@ -27,12 +23,12 @@ import java.util.stream.Collectors;
 
 @ConditionalOnProperty(prefix = "wallet", name = "support", havingValue = "udun")
 @Component
-public class UDunWalletWalletRestProxy implements WalletWalletRestProxy {
+public class UDunWalletRestfulProxy implements WalletRestfulProxy {
 
     private final UdunClient udunClient;
     private Map<String, Coin> coinMap;
 
-    public UDunWalletWalletRestProxy() {
+    public UDunWalletRestfulProxy() {
         String udunKey = System.getenv("UDUN_KEY");
         String gateway = System.getenv("UDUN_GATEWAY");
         String merchantId = System.getenv("UDUN_MERCHANTID");
