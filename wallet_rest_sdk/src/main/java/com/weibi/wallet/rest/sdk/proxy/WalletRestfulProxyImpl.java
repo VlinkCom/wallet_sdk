@@ -22,7 +22,7 @@ import java.util.*;
 
 
 @ConditionalOnProperty(prefix = "wallet", name = "support", havingValue = "default")
-@Component
+@Component("defaultWalletRestfulProxy")
 public class WalletRestfulProxyImpl implements WalletRestfulProxy {
 
     private final String walletRestHost;

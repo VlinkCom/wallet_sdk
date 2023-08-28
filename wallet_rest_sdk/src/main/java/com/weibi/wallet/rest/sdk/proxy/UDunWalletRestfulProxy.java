@@ -22,7 +22,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @ConditionalOnProperty(prefix = "wallet", name = "support", havingValue = "udun")
-@Component
+@Component("udunWalletRestfulProxy")
 public class UDunWalletRestfulProxy implements WalletRestfulProxy {
 
     private final UdunClient udunClient;
@@ -61,7 +61,7 @@ public class UDunWalletRestfulProxy implements WalletRestfulProxy {
         Coin coin = getCoinByName(addressParam.getCoin());
         UDunAddressParam param = new UDunAddressParam();
         param.setMainCoinType(coin.getMainCoinType());
-        Address address = udunClient.createAddress(param.getMainCoinType(), "", "", param.getCallUrl());
+        Address address = udunClient.createAddress(param.getMainCoinType(), "", "");
         return CommonResponse.successOf(Collections.singletonList(address.getAddress()));
     }
 
