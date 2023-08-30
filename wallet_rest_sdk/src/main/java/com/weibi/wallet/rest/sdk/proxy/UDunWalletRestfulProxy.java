@@ -37,19 +37,19 @@ public class UDunWalletRestfulProxy implements WalletRestfulProxy {
             throw new RuntimeException("没有配置udun钱包的相关配置");
         }
         udunClient = new UdunClient(gateway, merchantId, udunKey, callback);
-        coinMap = udunClient.listSupportCoin(false).stream().collect(Collectors.toMap(Coin::getName, Function.identity()));
+        coinMap = udunClient.listSupportCoin(false).stream().collect(Collectors.toMap(Coin::getCoinType, Function.identity()));
     }
 
-    private Coin getCoinByName(String name) {
+    private Coin getCoinByCoinType(String coinType) {
         // 从数据库中获取 udun钱包映射
         if (CollectionUtils.isEmpty(coinMap)) {
-            coinMap = udunClient.listSupportCoin(false).stream().collect(Collectors.toMap(Coin::getName, Function.identity()));
+            coinMap = udunClient.listSupportCoin(false).stream().collect(Collectors.toMap(Coin::getCoinType, Function.identity()));
         }
-        Coin coin = coinMap.get(name);
+        Coin coin = coinMap.get(coinType);
         if (Objects.isNull(coin)) {
-            coinMap = udunClient.listSupportCoin(false).stream().collect(Collectors.toMap(Coin::getName, Function.identity()));
+            coinMap = udunClient.listSupportCoin(false).stream().collect(Collectors.toMap(Coin::getCoinType, Function.identity()));
         }
-        coin = coinMap.get(name);
+        coin = coinMap.get(coinType);
         if (Objects.isNull(coin)) {
             throw new RuntimeException("udun wallet do not have the coin:" + coin);
         }
@@ -58,7 +58,7 @@ public class UDunWalletRestfulProxy implements WalletRestfulProxy {
 
     @Override
     public CommonResponse<List<String>> getUnUsedAddress(AddressParam addressParam) {
-        Coin coin = getCoinByName(addressParam.getCoin());
+        Coin coin = getCoinByCoinType(addressParam.getCoin());
         UDunAddressParam param = new UDunAddressParam();
         param.setMainCoinType(coin.getMainCoinType());
         Address address = udunClient.createAddress(param.getMainCoinType(), "", "");
@@ -68,7 +68,7 @@ public class UDunWalletRestfulProxy implements WalletRestfulProxy {
     // sign=md5(body + key + nonce + timestamp).toLowerCase()
     @Override
     public CommonResponse<TxEntityVo> createWithdraw(WithdrawCreateParam withdrawCreateParam) {
-        Coin coin = getCoinByName(withdrawCreateParam.getTxCoin());
+        Coin coin = getCoinByCoinType(withdrawCreateParam.getTxCoin());
         UDunWithdrawCreateParam param = new UDunWithdrawCreateParam();
         param.setAddress(withdrawCreateParam.getTxToWallet());
         param.setAmount(withdrawCreateParam.getTxAmount());
@@ -115,10 +115,10 @@ public class UDunWalletRestfulProxy implements WalletRestfulProxy {
     @Override
     public CommonResponse<List<CoinConfigVo>> listCoinConfig() {
         List<Coin> coins = udunClient.listSupportCoin(false);
-        coinMap = coins.stream().collect(Collectors.toMap(Coin::getName, Function.identity()));
+        coinMap = coins.stream().collect(Collectors.toMap(Coin::getCoinType, Function.identity()));
         List<CoinConfigVo> collect = coins.stream().map(coin -> {
             CoinConfigVo coinConfigVo = new CoinConfigVo();
-            coinConfigVo.setCode(coin.getSymbol());
+            coinConfigVo.setCode(coin.getCoinType());
             coinConfigVo.setMainCoinType(coin.getMainSymbol());
             coinConfigVo.setCoinFullName(coin.getName());
             coinConfigVo.setMaxPrecision(Integer.parseInt(coin.getDecimals()));
@@ -146,7 +146,7 @@ public class UDunWalletRestfulProxy implements WalletRestfulProxy {
 
     @Override
     public CommonResponse<Boolean> addressVerify(AddressVerifyParam verifyParam) {
-        Coin coin = getCoinByName(verifyParam.getCoinType());
+        Coin coin = getCoinByCoinType(verifyParam.getCoinType());
         UDunAddressVerifyParam param = new UDunAddressVerifyParam();
         param.setAddress(verifyParam.getAddress());
         param.setMainCoinType(coin.getMainCoinType());
