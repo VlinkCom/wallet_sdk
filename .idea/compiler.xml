@@ -8,11 +8,13 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="kylin_wallet_sdk" />
-        <module name="wallet_rest_sdk" />
+        <module name="block_sdk" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="wallet_project" target="1.8" />
+      <module name="wallet_rest_sdk (1) (com.weibi.wallet.block.sdk)" target="1.5" />
+      <module name="wallet_rest_sdk (2) (com.weibi.wallet.rest.sdk)" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

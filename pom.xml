@@ -8,9 +8,9 @@
     <version>X-WALLET-RELEASE</version>
 
     <modules>
-
         <module>wallet_rest_sdk</module>
         <module>kylin_wallet_sdk</module>
+        <module>block_sdk</module>
     </modules>
 
     <repositories>
