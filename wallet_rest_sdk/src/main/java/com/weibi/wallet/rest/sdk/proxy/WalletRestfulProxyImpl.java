@@ -1,7 +1,6 @@
 package com.weibi.wallet.rest.sdk.proxy;
 
 
-
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.weibi.wallet.rest.sdk.params.*;
@@ -18,7 +17,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 @ConditionalOnProperty(prefix = "wallet", name = "support", havingValue = "default")

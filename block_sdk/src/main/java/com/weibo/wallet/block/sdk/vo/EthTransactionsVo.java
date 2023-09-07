@@ -2,9 +2,6 @@ package com.weibo.wallet.block.sdk.vo;
 
 import lombok.Data;
 
-import java.math.BigInteger;
-import java.util.List;
-
 @Data
 public class EthTransactionsVo {
 

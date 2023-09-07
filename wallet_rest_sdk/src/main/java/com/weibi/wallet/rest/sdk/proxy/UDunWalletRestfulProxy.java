@@ -10,7 +10,6 @@ import com.weibi.wallet.rest.sdk.params.udun.UDunAddressVerifyParam;
 import com.weibi.wallet.rest.sdk.params.udun.UDunWithdrawCreateParam;
 import com.weibi.wallet.rest.sdk.resp.CommonResponse;
 import com.weibi.wallet.rest.sdk.vo.*;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
