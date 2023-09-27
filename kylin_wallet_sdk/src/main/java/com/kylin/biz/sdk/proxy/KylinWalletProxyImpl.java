@@ -1,7 +1,6 @@
 package com.kylin.biz.sdk.proxy;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.kylin.biz.sdk.params.*;
 import com.kylin.biz.sdk.resp.CommonResponse;
 import com.kylin.biz.sdk.util.EnvUtil;

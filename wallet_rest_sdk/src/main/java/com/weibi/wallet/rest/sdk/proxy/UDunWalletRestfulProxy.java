@@ -14,6 +14,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -28,16 +29,26 @@ public class UDunWalletRestfulProxy implements WalletRestfulProxy {
     private final UdunClient udunClient;
     private Map<String, Coin> coinMap;
 
+    public static String MOCK_ENVIRONMENT = "MOCK_ENVIRONMENT";
+
+
     public UDunWalletRestfulProxy() {
         String udunKey = System.getenv("UDUN_KEY");
         String gateway = System.getenv("UDUN_GATEWAY");
         String merchantId = System.getenv("UDUN_MERCHANTID");
         String callback = System.getenv("UDUN_CALLBACK");
+        String mockEnvironment = System.getenv(MOCK_ENVIRONMENT);
         if (StringUtils.isEmpty(udunKey) || StringUtils.isEmpty(gateway)) {
-            throw new RuntimeException("没有配置udun钱包的相关配置");
+            if (MOCK_ENVIRONMENT.equals(mockEnvironment)) {
+                udunClient = new UdunClient("", "", "", "");
+            } else {
+                throw new RuntimeException("没有配置udun钱包的相关配置");
+            }
+        } else {
+            udunClient = new UdunClient(gateway, merchantId, udunKey, callback);
+            coinMap = udunClient.listSupportCoin(false).stream().collect(Collectors.toMap(Coin::getCoinType, Function.identity()));
         }
-        udunClient = new UdunClient(gateway, merchantId, udunKey, callback);
-        coinMap = udunClient.listSupportCoin(false).stream().collect(Collectors.toMap(Coin::getCoinType, Function.identity()));
+
     }
 
     private Coin getCoinByCoinType(String coinType) {

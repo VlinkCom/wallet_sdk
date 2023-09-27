@@ -1,7 +1,7 @@
 package com.kylin.biz.sdk.util;
 
-import org.apache.commons.codec.binary.Base64;
 import com.google.common.base.Joiner;
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.binary.StringUtils;
 
 import java.io.UnsupportedEncodingException;

@@ -9,6 +9,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="kylin_wallet_sdk" />
         <module name="block_sdk" />
+        <module name="wallet_rest_sdk" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
