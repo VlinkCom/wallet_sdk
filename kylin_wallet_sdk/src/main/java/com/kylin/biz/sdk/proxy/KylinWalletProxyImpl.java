@@ -118,6 +118,7 @@ public class KylinWalletProxyImpl implements KylinWalletProxy{
             throw new RuntimeException("sign error");
         }
         headers.add(X_SIGNATURE,sign);
+        log.info("构建请求公钥:{}", publicKey);
         headers.add(X_ACCESS_KEY,publicKey);
         return headers;
     }

@@ -15,6 +15,9 @@ public class BlockClientManager {
         clientMap.forEach((k,v) -> this.blockClientMap.put(v.getCode(), v));
     }
 
+    /**
+     * 获取 BlockClient
+     */
     public BlockClient getBlockClientByType(Integer type) {
         return this.blockClientMap.get(type);
     }
