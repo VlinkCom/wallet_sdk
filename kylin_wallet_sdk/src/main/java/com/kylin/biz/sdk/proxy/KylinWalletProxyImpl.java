@@ -114,7 +114,8 @@ public class KylinWalletProxyImpl implements KylinWalletProxy{
         try {
             sign = WalletRSAUtil.sign(str.getBytes(), privateKey);
         } catch (Exception e) {
-            throw new RuntimeException("sign error");
+        	e.printStackTrace();
+            throw new RuntimeException("sign error:"+str);
         }
         headers.add(X_SIGNATURE,sign);
         log.info("构建请求公钥:{}", publicKey);
