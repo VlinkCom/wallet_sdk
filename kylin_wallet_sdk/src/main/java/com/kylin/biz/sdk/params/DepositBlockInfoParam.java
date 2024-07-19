@@ -43,8 +43,12 @@ public class DepositBlockInfoParam {
 
     private String memo;
 
+    //当前确认数
     private Long confirmations;
 
+    //最大确认数
+    private Long confirmedCount;
+    
     private Date updateTime;
 
     private Date createTime;
