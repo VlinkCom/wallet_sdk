@@ -30,5 +30,7 @@ public class DepositSucParam {
     private String depositTime;
 
     private String chain;
+    
+    private String paymentCategory;
 
 }
