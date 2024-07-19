@@ -5,7 +5,7 @@
     <groupId>com.weibi.wallet</groupId>
     <artifactId>wallet_sdk</artifactId>
     <packaging>pom</packaging>
-    <version>X-WALLET-RELEASE</version>
+    <version>WALLET-ANTARCTIC-RELEASE</version>
 
     <modules>
         <module>wallet_rest_sdk</module>
