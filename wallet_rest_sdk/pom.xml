@@ -6,7 +6,7 @@
     <parent>
         <groupId>com.weibi.wallet</groupId>
         <artifactId>wallet_sdk</artifactId>
-        <version>X-WALLET-RELEASE</version>
+        <version>AE-WALLET-RELEASE</version>
     </parent>
 
     <groupId>com.weibi.wallet.rest.sdk</groupId>

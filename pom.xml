@@ -5,7 +5,7 @@
     <groupId>com.weibi.wallet</groupId>
     <artifactId>wallet_sdk</artifactId>
     <packaging>pom</packaging>
-    <version>X-WALLET-RELEASE</version>
+    <version>AE-WALLET-RELEASE</version>
 
     <modules>
         <module>wallet_rest_sdk</module>
@@ -17,10 +17,15 @@
 
 
         <repository>
-            <id>exchange-release</id>
-            <name>exchange-release</name>
-            <url>http://47.108.216.211:18082/repository/exchange-release/</url>
-
+            <id>nexus-releases</id>
+            <name>Nexus Release Repository</name>
+            <url>https://nexus.fkw2.xyz/repository/maven-public/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
         </repository>
 
         <repository>
