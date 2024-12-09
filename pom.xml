@@ -16,12 +16,18 @@
     <repositories>
 
 
-        <repository>
-            <id>exchange-release</id>
-            <name>exchange-release</name>
-            <url>http://47.108.216.211:18082/repository/exchange-release/</url>
+	<repository>
+			<id>nexus-releases</id>
+			<name>Nexus Release Repository</name>
+			<url>https://nexus.rangya5.cn/repository/maven-public/</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
 
-        </repository>
+		</repository>
 
         <repository>
             <id>mvn-nemp-ftp</id>
@@ -141,16 +147,16 @@
         </dependencies>
     </dependencyManagement>
 
-    <distributionManagement>
+ <distributionManagement>
         <snapshotRepository>
             <id>exchange</id>
             <name>exchange</name>
-            <url>https://nexus.fkw2.xyz/repository/maven-releases/</url>
+            <url>https://nexus.rangya5.cn/repository/maven-releases/</url>
         </snapshotRepository>
 
         <repository>
             <id>exchange-release</id>
-            <url>https://nexus.fkw2.xyz/repository/maven-releases/</url>
+            <url>https://nexus.rangya5.cn/repository/maven-releases/</url>
         </repository>
     </distributionManagement>
 

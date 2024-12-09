@@ -14,5 +14,6 @@ public @interface WalletRestRequest {
 
     String path() default "";
 
+    
     Class typeInResponse() default  Object.class;
 }
