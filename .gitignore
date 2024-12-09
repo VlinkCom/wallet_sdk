@@ -104,7 +104,7 @@ ${sys:LOG_HOME}
 ${env:LOG_HOME}
 *.log
 *.out
-
+**/*.class
 .settings
 .classpath
 .project
