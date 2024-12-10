@@ -58,6 +58,7 @@ public class KylinWalletProxyImpl implements KylinWalletProxy{
       if (response.getStatusCode() != HttpStatus.OK) {
           throw new RuntimeException("url:"+ url +"请求异常:" + response.getBody());
       }
+      log.info("未确认交易回调<{}><{}><{}><{}><{}><{}><{}><{}><{}>",url,dto.getChain(),dto.getCoin(),dto.getToAddress(),dto.getAmount(),response.getStatusCode());
       return gson.fromJson(response.getBody(), CommonResponse.class);
 //      return CommonResponse.success();
     }
